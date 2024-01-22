@@ -111,12 +111,11 @@ export  const Getproductcategory = TryCatch(async(req,res,next)=>{
     ) => {
 
 
-        const {id} = req.params;
+        // const {id} = req.params;
       const { name, price, category, stock } = req.body;
-
       const image = req.file;
 
-      const product= await Product.findById(id);
+      const product= await Product.findById(req.params.id);
 
 if(!product) return next(new Errorhandler("Product Not Found", 404))
   
