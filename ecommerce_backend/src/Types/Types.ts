@@ -20,3 +20,27 @@ export type Controllertype = (
   res: Response,
   next: NextFunction
 ) => Promise<void | Response<any, Record<string, any>>>;
+
+export type Searchtype={
+  category?:string;
+  price?:number;
+  search?:string;
+  sort?:string;
+  page?:string;
+}
+
+export interface basequery {
+  name?:{
+    $regex:string,
+    $options:string
+  },
+  price?:{$lte:number};
+    category?:string;
+
+}
+
+export type Revalidatecahesprops={
+  product?:boolean,
+  order?:boolean,
+  admin?:boolean,
+}

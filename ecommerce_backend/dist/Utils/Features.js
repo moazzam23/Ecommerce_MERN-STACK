@@ -10,3 +10,11 @@ export const ConnectDB = () => {
         console.error("Error connecting to MongoDB:", error.message);
     });
 };
+export const revalidateCaches = ({ product, order, admin }) => {
+    if (product) {
+    }
+    if (order) {
+    }
+    if (admin) {
+    }
+};

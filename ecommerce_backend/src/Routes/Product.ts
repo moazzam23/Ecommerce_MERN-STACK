@@ -5,6 +5,7 @@ import {
   Createproduct,
   Deleteproduct,
   GetAllproduct,
+  GetAllproductsearch,
   Getlatestproduct,
   Getproductbyid,
   Getproductcategory,
@@ -13,15 +14,16 @@ import {
 
 const router = express.Router();
 
-router.post("/createproduct", Singleupload, Createproduct);
+router.post("/createproduct",Adminonly ,Singleupload, Createproduct);
 router.get("/latest", Getlatestproduct);
+router.get("/allproduct", GetAllproductsearch);
 router.get("/categories", Getproductcategory);
-router.get("/adminproduct", GetAllproduct);
+router.get("/adminproduct",Adminonly, GetAllproduct);
 
 router
   .route("/:id")
   .get(Getproductbyid)
-  .put(updateproduct)
-  .delete(Deleteproduct);
+  .put(Adminonly,Singleupload,updateproduct)
+  .delete(Adminonly,Deleteproduct);
 
 export default router;

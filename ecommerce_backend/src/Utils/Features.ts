@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Revalidatecahesprops } from "../Types/Types.js";
 
 export const ConnectDB = () => {
   mongoose.connect("mongodb://127.0.0.1:27017/", {
@@ -12,3 +13,17 @@ export const ConnectDB = () => {
     console.error("Error connecting to MongoDB:", error.message);
   });
 };
+
+export const revalidateCaches= ({product,order,admin}:Revalidatecahesprops)=>{
+
+  if(product){
+    
+  }
+  if(order){
+
+  }
+  if(admin){
+
+  }
+
+}
