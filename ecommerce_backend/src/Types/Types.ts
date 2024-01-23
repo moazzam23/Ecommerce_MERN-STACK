@@ -43,4 +43,32 @@ export type Revalidatecahesprops={
   product?:boolean,
   order?:boolean,
   admin?:boolean,
+  userID?:string,
+}
+
+export type OrderItems={
+  name:string,
+  price:number,
+  image:string,
+  quantity:number,
+  productID:string,
+}
+
+export type Shppinginfortype={
+  address:string,
+  city:string,
+  country:string,
+  state:string,
+  pinCode:number,
+}
+
+export interface NeworderBody {
+  shippingInfo:{},
+  user:string,
+  tax:number,
+  subtotal:number,
+  discount:number,
+  shippingcharges:number,
+  total:number,
+  orderItems:OrderItems[],
 }

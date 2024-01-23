@@ -3,6 +3,7 @@ import { Product } from "../model/Product.js";
 import Errorhandler from "../Utils/Utilityclas.js";
 import { rm } from "fs";
 import { MyCache } from "../App.js";
+import { revalidateCaches } from "../Utils/Features.js";
 // import {faker} from "@faker-js/faker"
 export const Createproduct = TryCatch(async (req, res, next) => {
     const { name, price, category, stock } = req.body;
@@ -22,6 +23,7 @@ export const Createproduct = TryCatch(async (req, res, next) => {
         stock,
         image: image.path,
     });
+    await revalidateCaches({ product: true, });
     return res.status(200).json({
         success: true,
         product,
@@ -93,6 +95,7 @@ export const Deleteproduct = TryCatch(async (req, res, next) => {
         console.log("deleted");
     });
     await product.deleteOne();
+    await revalidateCaches({ product: true, });
     return res.status(200).json({
         success: true,
         message: "product Deleted Successfully",
@@ -120,9 +123,10 @@ export const updateproduct = TryCatch(async (req, res, next) => {
     if (category)
         product.category = category;
     await product.save();
+    await revalidateCaches({ product: true, });
     return res.status(200).json({
         success: true,
-        message: "Product Updated Successfully"
+        message: "Product Updated Successfully",
     });
 });
 export const GetAllproductsearch = TryCatch(async (req, res, next) => {
@@ -134,17 +138,20 @@ export const GetAllproductsearch = TryCatch(async (req, res, next) => {
     if (search)
         Basequery.name = {
             $regex: search,
-            $options: "i"
+            $options: "i",
         };
     if (price)
         Basequery.price = {
-            $lte: Number(price)
+            $lte: Number(price),
         };
     if (category)
         Basequery.category = category;
     const [product, filterproduct] = await Promise.all([
-        Product.find(Basequery).sort(sort && { price: sort === "asc" ? -1 : 1 }).limit(limit).skip(skip),
         Product.find(Basequery)
+            .sort(sort && { price: sort === "asc" ? -1 : 1 })
+            .limit(limit)
+            .skip(skip),
+        Product.find(Basequery),
     ]);
     if (!product)
         return next(new Errorhandler("No product Found", 404));
@@ -152,7 +159,7 @@ export const GetAllproductsearch = TryCatch(async (req, res, next) => {
     return res.status(200).json({
         success: true,
         product,
-        totalpage
+        totalpage,
     });
 });
 //  export function createRandomrproducts():  {

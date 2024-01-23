@@ -11,6 +11,8 @@ export const Errormiddleware = (
   err.message ||= "Internal Server Error";
   err.statuscode ||= 500;
 
+  if(err.name === "CastError") err.message= "Invalid ID"
+
   return res.status(err.statuscode).json({
       success: false,
       message: err.message,
@@ -22,3 +24,6 @@ export const TryCatch =
   (req: Request, res: Response, next: NextFunction) => {
     return Promise.resolve(func(req, res, next)).catch(next);
   };
+
+
+  
