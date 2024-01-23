@@ -3,6 +3,7 @@ export const Errormiddleware = (err, req, res, next) => {
     err.statuscode || (err.statuscode = 500);
     if (err.name === "CastError")
         err.message = "Invalid ID";
+    // if(err.statuscode === 11000) err.message= "Duplicate Data"
     return res.status(err.statuscode).json({
         success: false,
         message: err.message,

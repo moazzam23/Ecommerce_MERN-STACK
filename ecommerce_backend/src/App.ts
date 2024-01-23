@@ -2,18 +2,17 @@ import express from "express";
 import UserRoutes from "./Routes/User.js"
 import ProductRoutes from "./Routes/Product.js"
 import OrderRoutes from "./Routes/Order.js"
+import PaymentRoutes from "./Routes/Payment.js"
+import StatsRoutes from "./Routes/Stats.js"
 import { ConnectDB } from "./Utils/Features.js";
 import { Errormiddleware } from "./Middlewares/Error.js";
 import NodeCache from "node-cache";
 import { config } from "dotenv";
 import morgan from "morgan";
 
-
-
 config({
     path:"./.env"
 })
-
 
 const port = process.env.PORT  || 3000;
 const MongoDB= process.env.MONGO_URI || "";
@@ -31,11 +30,11 @@ app.get("/",(req,res)=>{
 res.send("working properly")
 })
 
-
 app.use("/api/v1/user",UserRoutes)
 app.use("/api/v1/product",ProductRoutes)
 app.use("/api/v1/order",OrderRoutes)
-
+app.use("/api/v1/payment",PaymentRoutes)
+app.use("/api/v1/dashboard",StatsRoutes)
 
 app.use("/uploads",express.static("uploads"))
 app.use(Errormiddleware)
