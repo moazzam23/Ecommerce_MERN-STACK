@@ -19,6 +19,7 @@ const MongoDB= process.env.MONGO_URI || "";
 ConnectDB(MongoDB);
 
 export const MyCache= new NodeCache();
+// export const stripe= new str
 
 const app = express();
 

@@ -16,6 +16,7 @@ const port = process.env.PORT || 3000;
 const MongoDB = process.env.MONGO_URI || "";
 ConnectDB(MongoDB);
 export const MyCache = new NodeCache();
+// export const stripe= new str
 const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(morgan("dev"));

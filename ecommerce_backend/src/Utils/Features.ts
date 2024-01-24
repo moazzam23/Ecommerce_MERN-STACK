@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { OrderItems, Revalidatecahesprops } from "../Types/Types.js";
 import { MyCache } from "../App.js";
 import { Product } from "../model/Product.js";
@@ -41,6 +41,8 @@ MyCache.del(orderkey)
   }
   if(admin){
 
+    MyCache.del(["admin-stats","admin-pie-chart","admin-bar-chart","admin-line-chart"])
+
   }
 
 }
@@ -65,7 +67,59 @@ export const calculatepercent= async(thisMonth:number, LastMonth:number)=>{
 
 if(LastMonth === 0 ) return thisMonth*100
 
-  const percentage = ((thisMonth - LastMonth) / LastMonth) * 100;
+  const percentage = ((thisMonth) / LastMonth) * 100;
 
   return Number(percentage.toFixed(0))
+}
+
+
+export const GetProductCategory= async({ProductCategories,ProductsCount}:{ProductCategories:string[], ProductsCount:number})=>{
+  const productcategoryPromise = ProductCategories.map((category)=>  Product.countDocuments({category}) ) 
+
+const productCategoryCount = await Promise.all(productcategoryPromise)
+
+const CategoryCount: Record<string,number>[]=[];
+
+ProductCategories.forEach((category,i)=>{
+  CategoryCount.push({
+    [category]: Math.round(( productCategoryCount[i] / ProductsCount) * 100)
+  })
+})
+return CategoryCount;
+}
+
+
+interface MyDocument extends Document{
+  createdAt:Date;
+  discount?:number;
+  total?:number;
+}
+
+type DiffCalculatorprops={
+ length:number,
+ DocArr: MyDocument[],
+ Today:Date,
+ property?:"discount" | "total",
+}
+
+
+export const DiffCalculator= async({length,DocArr,Today,property}:DiffCalculatorprops)=>{
+
+  const Data:number[] = new Array(length).fill(0);
+
+    DocArr.forEach((i) => {
+      const creationdate = i.createdAt;
+      const monthdiff = (Today.getMonth() - creationdate.getMonth() / 12) % 12;
+
+      if (monthdiff < length) {
+        if(property){
+
+          Data[length - monthdiff - 1] += i[property]! ;
+        }else{
+          Data[length - monthdiff - 1] += 1;
+
+        }
+      }
+    });
+return Data;
 }
