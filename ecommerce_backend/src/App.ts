@@ -9,6 +9,7 @@ import { Errormiddleware } from "./Middlewares/Error.js";
 import NodeCache from "node-cache";
 import { config } from "dotenv";
 import morgan from "morgan";
+import stripe from "stripe"
 
 config({
     path:"./.env"
@@ -16,10 +17,11 @@ config({
 
 const port = process.env.PORT  || 3000;
 const MongoDB= process.env.MONGO_URI || "";
+const StripeKey= process.env.STRIPE_KEY || "";
 ConnectDB(MongoDB);
 
 export const MyCache= new NodeCache();
-// export const stripe= new str
+export const Stripe= new stripe(StripeKey);
 
 const app = express();
 
