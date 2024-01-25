@@ -3,6 +3,7 @@ import { BrowserRouter as Router,Route,Routes } from "react-router-dom"
 import { Suspense, lazy } from "react"
 import Loader from "./Components/Loader";
 import Header from "./Components/Header";
+import { Toaster } from "react-hot-toast";
 
 const Home = lazy(()=>import("./Pages/Home"));
 const Login = lazy(()=>import("./Pages/Login"));
@@ -49,7 +50,7 @@ const App = () => {
         <Route path="/order/:id" element={<OrderDetails/>} />
         
         
-        //Admin Routes
+        {/* Admin Routes */}
         <Route
   // element={
   //   <ProtectedRoute isAuthenticated={true} adminRoute={true} isAdmin={true} />
@@ -77,6 +78,7 @@ const App = () => {
 </Route>;
       </Routes>
       </Suspense>
+      <Toaster position="top-right"/>
     </Router>
   )
 }

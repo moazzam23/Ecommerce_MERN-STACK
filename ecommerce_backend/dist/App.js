@@ -10,6 +10,7 @@ import NodeCache from "node-cache";
 import { config } from "dotenv";
 import morgan from "morgan";
 import stripe from "stripe";
+import cors from "cors";
 config({
     path: "./.env"
 });
@@ -22,6 +23,7 @@ export const Stripe = new stripe(StripeKey);
 const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(morgan("dev"));
+app.use(cors());
 app.get("/", (req, res) => {
     res.send("working properly");
 });
