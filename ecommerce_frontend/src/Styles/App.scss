@@ -292,4 +292,28 @@
       transform: translate(-50%, -20%);
     }
   }
+
+  .skeletonloader{
+    display: flex;
+    flex-direction: column;
+    .skeletonshape{
+      height: 30px;
+      width: 100%;
+      background-color: #fff;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      transition: skeleton-loader 1.5s infinite;
+    }
+  }
   
+  @keyframes skeleton-loader {
+    0%{
+opacity: 0.6;
+    }
+    50%{
+opacity: 1;
+    }
+    100%{
+opacity: 0.6;
+    }
+  }
