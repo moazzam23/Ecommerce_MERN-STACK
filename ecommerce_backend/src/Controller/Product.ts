@@ -35,7 +35,7 @@ export const Createproduct = TryCatch(
       image: image.path,
     });
 
-    await revalidateCaches({product:true,admin:true});
+    await revalidateCaches({product:true, admin:true});
 
     return res.status(200).json({
       success: true,
@@ -70,7 +70,6 @@ export const Getproductcategory = TryCatch(async (req, res, next) => {
     product = await Product.distinct("category");
     MyCache.set("Product-category", JSON.stringify(product));
   }
-
   return res.status(200).json({
     success: true,
     product,
@@ -79,12 +78,13 @@ export const Getproductcategory = TryCatch(async (req, res, next) => {
 
 export const GetAllproduct = TryCatch(async (req, res, next) => {
   let product;
-  if (MyCache.has("ALL-products"))
-    product = JSON.parse(MyCache.get("ALL-products") as string);
-  else {
-    product = await Product.find({});
-    MyCache.set("ALL-products", JSON.stringify(product));
-  }
+  // if (MyCache.has("ALL-products"))
+  //   product = JSON.parse(MyCache.get("ALL-products") as string);
+  // else {
+  //   product = await Product.find({});
+  //   MyCache.set("ALL-products", JSON.stringify(product));
+  // }
+  product = await Product.find({});
   if (!product) return next(new Errorhandler("No product Found", 404));
 
   return res.status(200).json({
@@ -122,7 +122,7 @@ export const Deleteproduct = TryCatch(async (req, res, next) => {
   });
 
   await product.deleteOne();
-  await revalidateCaches({product:true,admin:true});
+  await revalidateCaches({product:true,productId: String(product._id),admin:true});
 
   return res.status(200).json({
     success: true,
@@ -154,7 +154,7 @@ export const updateproduct = TryCatch(async (req, res, next) => {
 
   await product.save();
 
-  await revalidateCaches({product:true,admin:true});
+  await revalidateCaches({product:true,productId: String(product._id),admin:true});
 
   return res.status(200).json({
     success: true,

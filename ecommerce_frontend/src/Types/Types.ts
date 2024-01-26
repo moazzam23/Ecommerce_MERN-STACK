@@ -16,3 +16,21 @@ export interface PRODUCT{
     price:number,
     _id:string,
 }
+
+export type shippinginfo={
+address:string,
+city:string,
+country:string
+state:string
+pinCode:number,
+}
+
+export type cartItems={
+
+name:string,
+image:string,
+price:number,
+quantity:number,
+productID:string,
+stock:number,
+}

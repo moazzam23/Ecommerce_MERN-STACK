@@ -7,7 +7,7 @@ export const NewOrder = TryCatch(async (req, res, next) => {
     const { shippingInfo, orderItems, user, tax, total, discount, shippingcharges, subtotal, } = req.body;
     if (!shippingInfo || !orderItems || !tax || !user || !subtotal || !total)
         return next(new Errorhandler("Fill All Fields", 400));
-    await Order.create({
+    const order = await Order.create({
         shippingInfo,
         orderItems,
         user,
@@ -18,7 +18,7 @@ export const NewOrder = TryCatch(async (req, res, next) => {
         subtotal,
     });
     await ReduceStock(orderItems);
-    await revalidateCaches({ product: true, admin: true, order: true, userID: user });
+    await revalidateCaches({ product: true, admin: true, order: true, userID: user, productId: order.orderItems.map((i) => String(i.productID)) });
     return res.status(201).json({
         success: true,
         message: "Order Placed Successfully"
@@ -85,7 +85,7 @@ export const ProcessOrder = TryCatch(async (req, res, next) => {
             break;
     }
     await orders.save();
-    await revalidateCaches({ product: false, admin: true, order: true, userID: orders.user });
+    await revalidateCaches({ product: false, admin: true, order: true, userID: orders.user, orderId: String(orders._id), });
     return res.status(201).json({
         success: true,
         message: "Order Updated Successfully"
@@ -97,7 +97,7 @@ export const DeleteOrder = TryCatch(async (req, res, next) => {
     if (!orders)
         return next(new Errorhandler("Order Not Found", 404));
     await orders.deleteOne();
-    await revalidateCaches({ product: false, admin: true, order: true, userID: orders.user });
+    await revalidateCaches({ product: false, admin: true, order: true, userID: orders.user, orderId: String(orders._id) });
     return res.status(201).json({
         success: true,
         message: "Order Deleted Successfully"

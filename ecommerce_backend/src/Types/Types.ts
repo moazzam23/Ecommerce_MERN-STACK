@@ -44,6 +44,8 @@ export type Revalidatecahesprops={
   order?:boolean,
   admin?:boolean,
   userID?:string,
+  orderId?: string;
+  productId?: string | string[];
 }
 
 export type OrderItems={

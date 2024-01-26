@@ -21,7 +21,7 @@ export const NewOrder = TryCatch(
 
     if(!shippingInfo ||!orderItems || !tax ||!user || !subtotal || !total ) return next( new Errorhandler("Fill All Fields", 400))
 
-    await Order.create({
+   const order= await Order.create({
       shippingInfo,
       orderItems,
       user,
@@ -34,7 +34,7 @@ export const NewOrder = TryCatch(
 
     await ReduceStock(orderItems);
 
- await revalidateCaches({product:true, admin:true, order:true,userID:user})
+ await revalidateCaches({product:true, admin:true, order:true,userID:user, productId: order.orderItems.map((i) => String(i.productID))})
 
  return res.status(201).json({
     success:true,
@@ -129,7 +129,7 @@ export const  ProcessOrder = TryCatch(async(req,res,next)=>{
     await orders.save();
 
 
-    await revalidateCaches({product:false, admin:true, order:true,userID:orders.user!})
+    await revalidateCaches({product:false, admin:true, order:true,userID:orders.user!,orderId: String(orders._id),})
 
 
     return res.status(201).json({
@@ -148,7 +148,7 @@ export const DeleteOrder = TryCatch(async(req,res,next)=>{
 
     await orders.deleteOne();
     
-    await revalidateCaches({product:false, admin:true, order:true,userID:orders.user!})
+    await revalidateCaches({product:false, admin:true, order:true,userID:orders.user!,orderId: String(orders._id)})
 
 
     return res.status(201).json({
