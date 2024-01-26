@@ -102,7 +102,7 @@ const Search = () => {
             searchData?.product.map((i) => (
               <ProductCard
                 key={i._id}
-                productId={i._id}
+                productID={i._id}
                 name={i.name}
                 image={i.image}
                 price={i.price}

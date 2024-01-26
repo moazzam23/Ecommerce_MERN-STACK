@@ -25,8 +25,11 @@ export const CartReducer = createSlice({
   reducers: {
 
     AddtoCart: (state,action:PayloadAction<cartItems>)=>{
-        state.loading=true,
-        state.cartItems.push(action.payload);
+        state.loading=true;
+
+const index= state.cartItems.findIndex((i)=>i.productID === action.payload.productID);
+if(index !== -1) state.cartItems[index]= action.payload;
+    else    state.cartItems.push(action.payload);
         state.loading=false
 
     },
@@ -35,9 +38,17 @@ export const CartReducer = createSlice({
         state.cartItems =state.cartItems.filter( (i) => i.productID !== action.payload);
         state.loading=false
 
-    }
+    },
+ calculateTotal: (state)=>{
+    let subtotal=state.cartItems.reduce((prev,item )=> prev + item.price*item.quantity,0)
 
+
+state.subtotal=subtotal,
+state.shippingcharges=state.subtotal > 1000 ? 0 :200;
+state.tax=Math.round(state.subtotal*0.18)
+state.total= state.subtotal+state.tax+state.shippingcharges- state.discount
+ }
   },
 });
 
-export const {AddtoCart,RemovetoCart} = CartReducer.actions
+export const {AddtoCart,RemovetoCart ,calculateTotal} = CartReducer.actions
