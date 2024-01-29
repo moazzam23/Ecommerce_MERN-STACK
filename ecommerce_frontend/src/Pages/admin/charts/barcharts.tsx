@@ -1,5 +1,10 @@
+import { useSelector } from "react-redux";
 import AdminSidebar from "../../../Components/admin/AdminSidebar";
 import { BarChart } from "../../../Components/admin/Charts";
+import { USERInitialState } from "../../../Types/userreducer-Type";
+import { useDashboardBarQuery } from "../../../Redux/Api/DashboardApi";
+import { Error } from "../../../Types/Apitypes";
+import toast from "react-hot-toast";
 
 const months = [
   "January",
@@ -17,6 +22,15 @@ const months = [
 ];
 
 const Barcharts = () => {
+
+  const {user} = useSelector((state:{UserReducer:USERInitialState})=>state.UserReducer)
+
+const {data , isError,error}= useDashboardBarQuery(user?._id!)
+if(isError) toast.error((error as Error).data.message)
+const Products= data?.barchart.product || [];
+const User= data?.barchart.user || [];
+const Order= data?.barchart.order || [];
+
   return (
     <div className="admin-container">
       <AdminSidebar />
@@ -24,8 +38,8 @@ const Barcharts = () => {
         <h1>Bar Charts</h1>
         <section>
           <BarChart
-            data_2={[300, 144, 433, 655, 237, 755, 190]}
-            data_1={[200, 444, 343, 556, 778, 455, 990]}
+            data_2={Products}
+            data_1={User}
             title_1="Products"
             title_2="Users"
             bgColor_1={`hsl(260, 50%, 30%)`}
@@ -40,7 +54,7 @@ const Barcharts = () => {
             data_1={[
               200, 444, 343, 556, 778, 455, 990, 444, 122, 334, 890, 909,
             ]}
-            data_2={[]}
+            data_2={Order}
             title_1="Orders"
             title_2=""
             bgColor_1={`hsl(180, 40%, 50%)`}
