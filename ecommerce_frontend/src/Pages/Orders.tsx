@@ -1,9 +1,15 @@
 
 
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import TableHOC from "../Components/admin/TableHOC";
 import { Column } from "react-table";
 import { Link } from "react-router-dom";
+import { useMyOrderQuery } from "../Redux/Api/OrderApi";
+import { USERInitialState } from "../Types/userreducer-Type";
+import { useSelector } from "react-redux";
+import { Error } from "../Types/Apitypes";
+import toast from "react-hot-toast";
+import Skeleton from "../Components/Skeleton";
 
 type Datatype={
 _id: string;
@@ -42,17 +48,39 @@ const column  : Column<Datatype>[]=[
 ]
 
 const Orders = () => {
+    const {user}= useSelector((state:{UserReducer:USERInitialState})=>state.UserReducer);
+    const {data,isError,error ,isLoading} = useMyOrderQuery(user?._id!)
+    
+    if(isError) toast.error((error as Error).data.message)
 
-    const [ row ]= useState<Datatype[]>([
-        {
-            _id: "83274873",
-            amount:1233,
-            quantity:123,
-            discount:34,
-            status: <span>Active</span>,
-            action: <Link to={`/order/${83274873}`}>View</Link>,
-            }
-    ])
+
+
+    const [ row,setRow ]= useState<Datatype[]>([])
+    useEffect(()=>{
+        if (data)
+        setRow(
+          data.orders.map((i) => ({
+            _id: i._id,
+            amount: i.total,
+            discount: i.discount,
+            quantity: i.orderItems.length,
+            status: (
+              <span
+                className={
+                  i.status === "Processing"
+                    ? "red"
+                    : i.status === "Shipped"
+                    ? "green"
+                    : "purple"
+                }
+              >
+                {i.status}
+              </span>
+            ),
+            action: <Link to={`/admin/transaction/${i._id}`}>Manage</Link>,
+          }))
+        );
+      },[data])
 
     const table = TableHOC<Datatype>(column,row,"dashboard-product-box","Orders")()
 
@@ -60,7 +88,7 @@ const Orders = () => {
   return (
     <div className="container">
         <h1>My Orders</h1>
-        {table}
+        { isLoading ? <Skeleton/> : table}
     </div>
   )
 }
