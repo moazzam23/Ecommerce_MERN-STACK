@@ -13,6 +13,8 @@ import { USERInitialState } from "./Types/userreducer-Type";
 import ProtectedRoute from "./Components/ProtectedRoute";
 
 const Home = lazy(()=>import("./Pages/Home"));
+const Checkout = lazy(()=>import("./Pages/Checkout"));
+const NotFound = lazy(()=>import("./Pages/NotFound"));
 const Login = lazy(()=>import("./Pages/Login"));
 const Search = lazy(()=>import("./Pages/Search"));
 const Cart = lazy(()=>import("./Pages/Cart"));
@@ -62,6 +64,7 @@ const dispatch = useDispatch();
 
   },[])
 
+
   return  loading ? <Loader/> :  (
     <Router>
 
@@ -71,6 +74,7 @@ const dispatch = useDispatch();
         <Route path="/" element={<Home/>} />
         <Route path="/search" element={<Search/>} />
         <Route path="/cart" element={<Cart/>} />
+        <Route path="*" element={<NotFound/>} />
         <Route path="/login" element={ <ProtectedRoute isAuthenticated={user ? false : true}>
 <Login/>
         </ProtectedRoute> } />
@@ -78,6 +82,7 @@ const dispatch = useDispatch();
         <Route path="/shipping" element={<Shipping/>} />
         <Route path="/orders" element={<Orders/>} />
         <Route path="/order/:id" element={<OrderDetails/>} />
+        <Route path="/pay" element={<Checkout/>} />
         </Route> 
         
         {/* Admin Routes */}

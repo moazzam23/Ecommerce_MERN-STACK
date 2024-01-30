@@ -94,7 +94,7 @@ export type NeworderResponse = {
   orderItems: cartItems[];
   subtotal: number;
   tax: number;
-  shippingCharges: number;
+  shippingcharges: number;
   discount: number;
   total: number;
   user: string;

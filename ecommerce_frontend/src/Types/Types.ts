@@ -52,7 +52,7 @@ quantity:number,
 productID:string,
 stock:number,
 }
-type changepercentage={
+type changePercentage={
   revenue:number,
   user:number,
   product:number,
@@ -70,8 +70,8 @@ type tranctions={
 
 export type stats={
   CategoryCount: Record<string,number>[],
-  Changepercentage:changepercentage,
-  Count: changepercentage,
+  ChangePercentage:changePercentage,
+  Count: changePercentage,
   chart: {
     order:number[],
     Revenue:number[],

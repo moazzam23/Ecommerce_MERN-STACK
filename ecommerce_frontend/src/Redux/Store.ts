@@ -25,3 +25,5 @@ export const store = configureStore({
     DashboardApi.middleware,
   ],
 });
+
+export type RootState = ReturnType<typeof store.getState>;
