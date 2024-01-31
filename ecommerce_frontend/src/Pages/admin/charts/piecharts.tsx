@@ -1,29 +1,29 @@
 import { useSelector } from "react-redux";
 import AdminSidebar from "../../../Components/admin/AdminSidebar";
 import { DoughnutChart, PieChart } from "../../../Components/admin/Charts";
-// import data from "../../../assets/data.json";
+import {categories} from "../../../assets/data.json";
 import { USERInitialState } from "../../../Types/userreducer-Type";
 import { useDashboardPieQuery } from "../../../Redux/Api/DashboardApi";
 import { Navigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Error } from "../../../Types/Apitypes";
+import Skeleton from "../../../Components/Skeleton";
 
 const PieCharts = () => {
   const {user} = useSelector((state:{UserReducer:USERInitialState})=>state.UserReducer)
-  const {data,isError,error}= useDashboardPieQuery(user?._id!)
+  const {data,isError,error,isLoading}= useDashboardPieQuery(user?._id!)
   if(isError) {toast.error((error as Error).data.message)
    return <Navigate to={"/admin/dashboard"} />;
   }
   const piechart= data?.piechart!;
-  
-  console.log(piechart)
 
   return (
     <div className="admin-container">
       <AdminSidebar />
       <main className="chart-container">
         <h1>Pie & Doughnut Charts</h1>
-        <section>
+       { isLoading ? <Skeleton/> :<>
+       <section>
           <div>
             <PieChart
               labels={["Processing", "Shipped", "Delivered"]}
@@ -41,25 +41,18 @@ const PieCharts = () => {
 
         <section>
           <div>
-          {piechart?.CategoryCount.map((i) => {
-                 const [heading, value] = Object.entries(i)[0];
-                 return(
                   <DoughnutChart
-                  labels={[heading]}
-                  data={[value]}
-                  backgroundColor={ [`hsl(${i.value * 4}, ${i.value}%, 50%)`]
-                  }
+                  labels={piechart?.CategoryCount.map((i) => Object.keys(i)[0])}
+                  data={piechart?.CategoryCount.map((i) => Object.values(i)[0])}
+                  backgroundColor={categories.map(
+                    (i) =>  `hsl(${Number(Object.values(i)[0]) * 4}, ${
+                      Object.values(i)[0]
+                    }%, 50%)`
+                  )}
                   legends={false}
                   offset={[0, 0, 0, 80]}
+
                 />
-                  // <CategoryItem
-                //   key={heading}
-                //   value={value}
-                //   heading={heading}
-                //   color={`hsl(${i.value * 4}, ${i.value}%, 50%)`}
-                // />
-                )
-})}
 
           </div>
           <h2>Product Categories Ratio</h2>
@@ -134,6 +127,7 @@ const PieCharts = () => {
             />
           </div>
         </section>
+       </> }
       </main>
     </div>
   );

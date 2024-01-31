@@ -3,22 +3,10 @@ import AdminSidebar from "../../../Components/admin/AdminSidebar";
 import { LineChart } from "../../../Components/admin/Charts";
 import { USERInitialState } from "../../../Types/userreducer-Type";
 import { useDashboardLineQuery } from "../../../Redux/Api/DashboardApi";
+import { GetLastMonth } from "../../../utils/Features";
 
 
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "Aug",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+const{last12Month}=GetLastMonth()
 
 const Linecharts = () => {
 
@@ -41,7 +29,7 @@ const Linecharts = () => {
             data={User}
             label="Users"
             borderColor="rgb(53, 162, 255)"
-            labels={months}
+            labels={last12Month}
             backgroundColor="rgba(53, 162, 255, 0.5)"
           />
           <h2>Active Users</h2>
@@ -52,7 +40,7 @@ const Linecharts = () => {
             data={Products}
             backgroundColor={"hsla(269,80%,40%,0.4)"}
             borderColor={"hsl(269,80%,40%)"}
-            labels={months}
+            labels={last12Month}
             label="Products"
           />
           <h2>Total Products (SKU)</h2>
@@ -64,7 +52,7 @@ const Linecharts = () => {
             backgroundColor={"hsla(129,80%,40%,0.4)"}
             borderColor={"hsl(129,80%,40%)"}
             label="Revenue"
-            labels={months}
+            labels={last12Month}
           />
           <h2>Total Revenue </h2>
         </section>
@@ -75,7 +63,7 @@ const Linecharts = () => {
             backgroundColor={"hsla(29,80%,40%,0.4)"}
             borderColor={"hsl(29,80%,40%)"}
             label="Discount"
-            labels={months}
+            labels={last12Month}
           />
           <h2>Discount Allotted </h2>
         </section>

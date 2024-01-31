@@ -5,21 +5,11 @@ import { USERInitialState } from "../../../Types/userreducer-Type";
 import { useDashboardBarQuery } from "../../../Redux/Api/DashboardApi";
 import { Error } from "../../../Types/Apitypes";
 import toast from "react-hot-toast";
+import { GetLastMonth } from "../../../utils/Features";
 
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "Aug",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+
+
+const {last12Month,last6Month}= GetLastMonth()
 
 const Barcharts = () => {
 
@@ -40,6 +30,7 @@ const Order= data?.barchart.order || [];
           <BarChart
             data_2={Products}
             data_1={User}
+            labels={last6Month}
             title_1="Products"
             title_2="Users"
             bgColor_1={`hsl(260, 50%, 30%)`}
@@ -51,15 +42,15 @@ const Order= data?.barchart.order || [];
         <section>
           <BarChart
             horizontal={true}
-            data_1={[
-              200, 444, 343, 556, 778, 455, 990, 444, 122, 334, 890, 909,
-            ]}
-            data_2={Order}
+            data_1={
+             Order
+            }
+            data_2={[]}
             title_1="Orders"
             title_2=""
             bgColor_1={`hsl(180, 40%, 50%)`}
             bgColor_2=""
-            labels={months}
+            labels={last12Month}
           />
           <h2>Orders throughout the year</h2>
         </section>

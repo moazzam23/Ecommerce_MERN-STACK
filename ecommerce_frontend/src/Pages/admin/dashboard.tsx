@@ -12,6 +12,7 @@ import { useDashboardratioQuery } from "../../Redux/Api/DashboardApi";
 import { Navigate } from "react-router-dom";
 import Skeleton from "../../Components/Skeleton";
 import { RootState } from "../../Redux/Store";
+import { GetLastMonth } from "../../utils/Features";
 // import Loader from "../../Components/admin/Loader";
 
 const userImg =
@@ -22,6 +23,7 @@ const Dashboard = () => {
 
   const {data,isError,isLoading}=  useDashboardratioQuery(user?._id!)
 
+  const {last6Month}= GetLastMonth()
 
  const stats= data?.stats!;
   if (isError) return <Navigate to={"/"} />;
@@ -74,6 +76,7 @@ const Dashboard = () => {
               data_2={data?.stats.chart.Revenue!}
               data_1={data?.stats.chart.order!}
               title_1="Revenue"
+              labels={last6Month}
               title_2="Transaction"
               bgColor_1="rgb(0, 115, 255)"
               bgColor_2="rgba(53, 162, 235, 0.8)"
@@ -91,7 +94,7 @@ const Dashboard = () => {
                   key={heading}
                   value={value}
                   heading={heading}
-                  color={`hsl(${i.value * 4}, ${i.value}%, 50%)`}
+                  color={`hsl(${value * 4}, ${value}%, 50%)`}
                 />)
 })}
             </div>

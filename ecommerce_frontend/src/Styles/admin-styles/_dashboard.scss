@@ -77,8 +77,8 @@
 
     .revenue-chart {
       width: 100%;
-      padding: 1rem 3rem;
-
+      padding: 1rem 2rem;
+height: 450px;
       > h2 {
         @include heading;
         margin: 1rem 0 2rem 0.25rem;
@@ -89,6 +89,7 @@
     .dashboard-categories {
       width: 100%;
       max-width: 16rem;
+      height: 450px;
       @include flex(column, center, unset, 0);
       padding-bottom: 2rem;
       > h2 {

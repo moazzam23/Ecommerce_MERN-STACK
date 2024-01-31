@@ -20,6 +20,7 @@ const Loader = () => {
   };
   return (
     <div style={loaderStyle}>
+      Please Wait...
       <div style={spinnerStyle}></div>
     </div>
   )
