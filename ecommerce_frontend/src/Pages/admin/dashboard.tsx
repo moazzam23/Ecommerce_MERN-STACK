@@ -2,7 +2,7 @@
 import { BiMaleFemale } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";
 import { FaRegBell } from "react-icons/fa";
-import data from "../../assets/data.json";
+// import data from "../../assets/data.json";
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import AdminSidebar from "../../Components/admin/AdminSidebar";
@@ -25,7 +25,6 @@ const Dashboard = () => {
 
  const stats= data?.stats!;
   if (isError) return <Navigate to={"/"} />;
-
   return (
     <div className="admin-container">
       <AdminSidebar />
@@ -40,28 +39,28 @@ const Dashboard = () => {
         </div>
 
         <section className="widget-container">
-          {/* <WidgetItem
-            percent={stats.Changepercentage.revenue}
+          <WidgetItem
+            percent={stats.ChangePercent.revenue}
             amount={true}
             value={stats.Count.revenue}
             heading="Revenue"
             color="rgb(0, 115, 255)"
-          /> */}
+          />
           <WidgetItem
-            percent={stats.ChangePercentage.user}
+            percent={stats.ChangePercent.user}
             value={stats.Count.user}
             color="rgb(0 198 202)"
             heading="Users"
           />
           <WidgetItem
-            percent={stats.ChangePercentage.order}
+            percent={stats.ChangePercent.order}
             value={stats.Count.order}
             color="rgb(255 196 0)"
             heading="Transactions"
           />
 
           <WidgetItem
-            percent={stats.ChangePercentage.product}
+            percent={stats.ChangePercent.product}
             value={stats.Count.product}
             color="rgb(76 0 255)"
             heading="Products"
@@ -142,7 +141,7 @@ const WidgetItem = ({
   <article className="widget">
     <div className="widget-info">
       <p>{heading}</p>
-      <h4>{amount ? `₹${value}` : value}</h4>
+      <h4>{amount ? `Pkr${value}` : value}</h4>
       {percent > 0 ? (
         <span className="green">
           <HiTrendingUp /> +{percent}%{" "}

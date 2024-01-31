@@ -2,7 +2,7 @@ import {
   Barchart,
   ORDER,
   PRODUCT,
-  Piechart,
+  piechart,
   USER,
   cartItems,
   linechart,
@@ -115,7 +115,7 @@ export type StateResponse = {
 };
 export type PieResponse = {
   success: boolean;
-  piechart: Piechart;
+  piechart: piechart;
 };
 export type BarResponse = {
   success: boolean;

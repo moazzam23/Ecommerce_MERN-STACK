@@ -52,7 +52,7 @@ quantity:number,
 productID:string,
 stock:number,
 }
-type changePercentage={
+type ChangePercent={
   revenue:number,
   user:number,
   product:number,
@@ -70,8 +70,8 @@ type tranctions={
 
 export type stats={
   CategoryCount: Record<string,number>[],
-  ChangePercentage:changePercentage,
-  Count: changePercentage,
+  ChangePercent:ChangePercent,
+  Count: ChangePercent,
   chart: {
     order:number[],
     Revenue:number[],
@@ -84,35 +84,35 @@ export type stats={
 
 };
 
-type Orderfullment={
+type Orderfullfillment={
   Processed:number,
   Shipped:number,
   Delivered:number,
 }
 
-type revenuecollection={
+type RevenueDistribution={
   netmargin:number,
   Discount:number,
   ProductionCost:number,
-  burnt:10,
-  marketingCost:30,
+  burnt:number,
+  marketingCost:number,
 }
 
-type Userage={
+type UserAgeGroup={
   teen:number,
   adult:number,
   old:number,
 }
 
-export type Piechart={
-  Orderfullfillment:Orderfullment,
+export type piechart={
+  Orderfullfillment:Orderfullfillment,
   CategoryCount: Record<string,number>[],
   StockAvaliability:{
-    totalstock:3,
-    outstock:0,
+    totalstock:number,
+    outstock:number,
   },
-  RevenueDistribution:revenuecollection,
-  UserAgeGroup:Userage,
+  RevenueDistribution:RevenueDistribution,
+  UserAgeGroup:UserAgeGroup,
   AdminBlock:{
     admin:number,
     customer:number,
